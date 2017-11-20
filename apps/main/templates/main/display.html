@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{user.username}}</title>
+    {% load static %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <a class="navlink" href="/dashboard">dashboard</a>
+        <p class="navlink"> | </p>
+        <a  class="navlink" href="/logout">logout</a>
+      </div>
+      <div class="header">
+        <h4>Posted by {{user.name}}</h4>
+        <h4>count: {{contents.count}}</h4>
+      </div>
+      <div class="qtext">
+        {% for i in contents %}
+          <p><span>{{i.author}}:</span> {{i.quote}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
