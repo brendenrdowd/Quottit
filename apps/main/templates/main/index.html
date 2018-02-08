@@ -1,61 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Home</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'main/style.css' %}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>Hello, {{user.name}}!</h1>
-        <div class="nav">
-          <a class="navlink" href="/logout">Logout</a>
-        </div>
-      </div>
-      <div class="body">
+
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+  {% load staticfiles %}
+  <!-- <link rel="stylesheet" href="{% static 'main/style.css' %}"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</head>
+
+<body>
+  <div class="container gray lighten-5">
+  <nav>
+    <div class="nav-wrapper blue">
+      <a class="brand-logo" href="/">Hello, {{user.name}}!</a>
+      <ul id="nav-mobile" class="right">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+    <div class="row">
+      <div class="col s6">
         {% if messages %}
-          <ul class="messages">
-            {% for message in messages %}
-              <li style="color:red" {%if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-          </ul>
+        <ul class="messages">
+          {% for message in messages %}
+          <li style="color:red" {%if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
         {% endif %}
         <div class="left">
           <h3>Quotable Quotes</h3>
-          {% if contents %}
-            {% for i in contents %}
-            <div class="qtext">
-              <p class="qtext">{{i.author}}: {{i.quote}}</p>
-              <p>Posted by: <a href="user/{{i.user.id}}">{{i.user.name}}</a></p>
-              <a href="/dashboard/favorite/{{i.id}}">Add to My List</a>
-            </div>
-            {% endfor %}
-          {% endif %}
-        </div>
-        <div class="right">
-          <h3>Your Favorites</h3>
-          {% if favorites %}
-            {% for f in favorites %}
-            <div class="qtext">
-              <p class="qtext">{{f.quote.author}}: {{f.quote.quote}}</p> <!--Why is it grabbing a 'Quote Object' and not the data? -->
-              <p>Posted by: <a href="/user/{{user.id}}">{{f.quote.user.name}}</a></p>
-              <a href="/dashboard/remove/{{f.id}}">Remove to My List</a>
-            </div>
-            {% endfor %}
-          {% endif %}
-          <div class="add">
-            <h3>Contribute a Quote:</h3>
-            <form class="add" action="/dashboard/add" method="post">
-              {% csrf_token %}
-              <label for="author">Quoted by:<input type="text" name="author"></label>
-              <label for="quote"><textarea name="quote" rows="8" cols="80"></textarea></label>
-              <input type="submit" name="submit" value="submit">
-            </form>
+          {% if contents %} {% for i in contents %}
+          <div class="qtext">
+            <p class="qtext">{{i.author}}: {{i.quote}}</p>
+            <p>Posted by:
+              <a href="user/{{i.user.id}}">{{i.user.name}}</a>
+            </p>
+            <a href="/dashboard/favorite/{{i.id}}">Add to My List</a>
           </div>
+          {% endfor %} {% endif %}
+        </div>
+        <div class="favorites">
+          <h3>Your Favorites</h3>
+          {% if favorites %} {% for f in favorites %}
+          <div class="qtext">
+            <p class="qtext">{{f.quote.author}}: {{f.quote.quote}}</p>
+            <!--Why is it grabbing a 'Quote Object' and not the data? -->
+            <p>Posted by:
+              <a href="/user/{{user.id}}">{{f.quote.user.name}}</a>
+            </p>
+            <a href="/dashboard/remove/{{f.id}}">Remove to My List</a>
+          </div>
+          {% endfor %} {% endif %}
         </div>
       </div>
+
+        <div class="col s6">
+          <h3>Contribute a Quote:</h3>
+          <form class="add" action="/dashboard/add" method="post">
+            {% csrf_token %}
+            <label for="author">Quoted by:</label>
+              <input type="text" name="author">
+              <label for="quote">Quote:</label>
+              <textarea class="materialize-textarea" name="quote"></textarea>
+            <input class="btn green waves-effect waves-light" type="submit" name="submit" value="Add Quote">
+          </form>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>

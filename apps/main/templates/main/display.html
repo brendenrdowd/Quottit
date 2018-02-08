@@ -6,22 +6,30 @@
     {% load static %}
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   </head>
   <body>
     <div class="container">
-      <div class="nav">
-        <a class="navlink" href="/dashboard">dashboard</a>
-        <p class="navlink"> | </p>
-        <a  class="navlink" href="/logout">logout</a>
+      <nav>
+        <div class="nav-wrapper blue">
+          <ul id="nav-mobile" class="left">
+            <li><a class="navlink" href="/dashboard"><i class="material-icons">home</i></a></li>
+            <li><a  class="navlink" href="/logout"><i class="material-icons">backspace</i></a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="row">
+        <div class="col s6"><h4>Posted by {{user.name}}</h4></div>
+        <div class="col s6"><h4>count: {{contents.count}}</h4></div>
       </div>
-      <div class="header">
-        <h4>Posted by {{user.name}}</h4>
-        <h4>count: {{contents.count}}</h4>
-      </div>
-      <div class="qtext">
-        {% for i in contents %}
-          <p><span>{{i.author}}:</span> {{i.quote}}</p>
-        {% endfor %}
+      <div class="row">
+        <div class="col s12">
+          {% for i in contents %}
+            <p><span>{{i.author}}:</span> {{i.quote}}</p>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </body>
