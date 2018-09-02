@@ -24,16 +24,37 @@ class Manager(models.Manager):
         print 'finished with validation'
         return results
 
-    def favVal(self, number, user_id):
+    def favVal(self, quote_id, user_id):
         print 'in favVal'
+        print 'quote_id: {}'.format(quote_id)
+        print 'user_id: {}'.format(user_id)
         results = {
             'status': True,
             'errors': [],
         }
         user = User.objects.get(id=user_id)
-        quote = Quote.objects.get(id=number)
-        fave = Favorite.objects.create(quote=quote,user=user)
-        return results
+        quote = Quote.objects.get(id=quote_id)
+        print 'quote: {}'.format(quote)
+        # if quote id already exists in user's favorites, skip create, is there a more direct way?
+        try:
+            favorites = Favorite.objects.filter(user=user_id)
+        except Favorite.DoesNotExist:
+            favorites = None
+        switch = False
+        if favorites:
+            for favoriteObj in favorites:
+                print 'in loop - quote: {}'.format(quote)
+                print 'in loop - favoriteObj: {}'.format(favoriteObj.quote)
+                if favoriteObj.quote == quote:
+                    switch = True
+            if switch == True:
+                return results
+            else:
+                fave = Favorite.objects.create(quote=quote,user=user)
+                return results
+        else:
+            fave = Favorite.objects.create(quote=quote,user=user)
+            return results
 
 class Quote(models.Model):
     quote = models.TextField()

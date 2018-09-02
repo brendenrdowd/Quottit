@@ -48,3 +48,9 @@ def remove(request,number):
     d = Favorite.objects.get(id=number)
     d.delete()
     return redirect('/dashboard')
+
+def userTest(ObjId, userId):
+    if ObjId == userId:
+        return True
+    else:
+        return False
